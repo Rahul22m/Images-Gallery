@@ -1,0 +1,871 @@
+openapi: 3.0.0
+info:
+  title: Image Uploader API definition
+  description: Creating API definition for image uplaoding using open api 3.0.0
+  contact:
+    email: abc@example.com
+  version: 1.0.0
+tags:
+  - name: Images
+    description:  Get and Post All Uploaded Images
+  - name: AuthControllers
+    description: Login, SignUp and Logout User
+  - name: Admin
+    description: Get and Post Users
+paths:
+  /images:
+    get:
+      security: 
+        - bearerAuth: []
+      tags:
+        - Images
+      parameters:
+        - in: query
+          name: page
+          description: this is page number
+          schema:
+            type: integer
+            example: 1
+        - in: query
+          name: limit
+          description: this is the limit
+          schema:
+            type: integer
+            example: 10
+        - in: query
+          name: sortBy
+          description: value to sort with
+          schema: 
+            type: string
+            example: "title"
+        - in: query
+          name: orderBy
+          description: order in which to show
+          schema:
+            type: string
+            example: "ASC"
+        - in: query
+          name: search
+          description: value to be searched
+          schema:
+            type: string
+            example: ""
+
+      responses:
+        200:
+          $ref: '#/components/responses/200ImageSuccess'
+        
+        500:
+          $ref: '#/components/responses/500APIError'
+          
+        400:
+          $ref: '#/components/responses/400APIError'
+          
+        401:
+          $ref: '#/components/responses/401APIError'
+    
+    post:
+      tags:
+        - Images
+      security: 
+        - bearerAuth: []
+        
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dataUri:
+                  type: string
+                  format: uri
+                  example: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA3YAAAHwCAYAAADq2/1hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAP+lSU==
+                title:
+                  type: string
+                  example: "Any Title"
+                description: 
+                  type: string
+                  example: "Any description"
+                
+      responses:
+        201:
+          $ref: '#/components/responses/201ImageSuccess'
+        
+        500:
+          $ref: '#/components/responses/500APIError'
+        
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: Invalid request. Please provide a valid datauri
+        
+        401:
+          $ref: '#/components/responses/401APIError'
+  
+  /images/{imageId}:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Images
+      parameters:
+        - in: path
+          name: imageId
+          description: this is image id
+          required: true
+          schema:
+            type: integer
+            example: 2
+      responses:
+        200:
+          description:  to get an image
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  result:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      dataUri: 
+                        type: string
+                        format: uri
+                        example: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA3YAAAHwCAYAAADq2/1hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAP+lSU==
+                      userId:
+                        type: integer
+                        example: 2
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: 2024-10-25T11:45:26.692Z
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: 2024-10-25T11:45:26.692Z
+                      deletedAt:
+                        type: string
+                        format: date-time
+                        example: 
+        500:
+          $ref: '#/components/responses/500APIError'
+        400:
+          $ref: '#/components/responses/400APIError'
+        401:
+          $ref: '#/components/responses/401APIError'
+
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Images
+      parameters:
+        - in: path
+          name: imageId
+          description: this is image id
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: to delete a image
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Image deleted successfully
+        500:
+          $ref: '#/components/responses/500APIError'
+        400:
+          $ref: '#/components/responses/400APIError'
+        401:
+          $ref: '#/components/responses/401APIError'
+
+      
+      
+  
+  /allimages:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Images
+      parameters:
+        - in: query
+          name: page
+          description: this is page number
+          schema:
+            type: integer
+            example: 1
+        - in: query
+          name: limit
+          description: this is the limit
+          schema:
+            type: integer
+            example: 10
+        - in: query
+          name: sortBy
+          description: value to sort with
+          schema: 
+            type: string
+            example: "title"
+        - in: query
+          name: orderBy
+          description: order in which to show
+          schema:
+            type: string
+            example: "ASC"
+        - in: query
+          name: search
+          description: value to be searched
+          schema:
+            type: string
+            example: "avatar"
+
+      responses:
+        200:
+          $ref: '#/components/responses/200ImageSuccess'
+        
+        500:
+          $ref: '#/components/responses/500APIError'
+          
+        400:
+          $ref: '#/components/responses/400APIError'
+          
+        401:
+          $ref: '#/components/responses/401APIError'
+        403:
+          $ref: '#/components/responses/403APIError'
+
+  /allimages/{imageId}:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Images
+      parameters:
+        - in: path
+          name: imageId
+          description: this is image id
+          required: true
+          schema:
+            type: integer
+            example: 2
+      responses:
+        200:
+          description:  to get an image
+          content: 
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  result:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      dataUri: 
+                        type: string
+                        format: uri
+                        example: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA3YAAAHwCAYAAADq2/1hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAP+lSU==
+                      userId:
+                        type: integer
+                        example: 2
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: 2024-10-25T11:45:26.692Z
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: 2024-10-25T11:45:26.692Z
+                      deletedAt:
+                        type: string
+                        format: date-time
+                        example: 
+        500:
+          $ref: '#/components/responses/500APIError'
+        400:
+          $ref: '#/components/responses/400APIError'
+        401:
+          $ref: '#/components/responses/401APIError'
+          
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Images
+      parameters:
+        - in: path
+          name: id
+          description: this is image id
+          required: true
+          schema:
+            type: integer
+            example: 2
+      responses:
+        200:
+          description: to delete a image
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Image deleted successfully 
+        500:
+          $ref: '#/components/responses/500APIError'
+        400:
+          $ref: '#/components/responses/400APIError'
+        401:
+          $ref: '#/components/responses/401APIError'
+
+
+  /login:
+    post:
+      tags:
+        - AuthControllers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "abc@gmail.com"
+                password:
+                  type: string
+                  example: ABC12345@
+      
+      responses:
+        201:
+          description: successfully login a user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzI5NTgxMTIyLCJleHAiOjE3MzIxNzMxMjJ9.HVIkNUNl4yPIM9qDO0S1FvYKX05lrLwcZCsDRlf5rH
+                  id:
+                    type: integer
+                    example: 1
+                  userType:
+                    type: string
+                    enum: ["Admin", "User"]
+                    example: 1
+        500: 
+          $ref: '#/components/responses/500APIError'
+        
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: Please provide required email and password credentials
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message:
+                    type: string
+                    example: Incorrect email or password
+  /signup:
+    post:
+      tags:
+        - AuthControllers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userType:
+                  type: string
+                  enum: ["Admin", "User"]
+                  example: "1"
+                email:
+                  type: string
+                  example: abc@gmail.com
+                password:
+                  type: string
+                  example: Abc12345@example.com
+                confirmPassword:
+                  type: string
+                  example: Abc@12345@
+      
+      responses:
+        201:
+          description: successfully create a user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      userType:
+                        type: string
+                        example: 1
+                      email:
+                        type: string
+                        example: abc@example.com
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: 2024-10-22T07:28:48.097Z
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: 2024-10-22T07:28:48.097Z
+        500:
+          $ref: '#/components/responses/500APIError'
+        
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: fail
+                  message: 
+                    type: string
+                    example: Failed to create user/Invalid userType
+        
+  /logout:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - AuthControllers
+      responses:
+        201:
+          description: logout a user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Logged out successfully
+        500:
+          $ref: '#/components/responses/500APIError'
+            
+      
+  /users:
+    get:
+      security: 
+        - bearerAuth: []
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: page
+          description: this is page number
+          schema:
+            type: integer
+            example: 1
+        - in: query
+          name: limit
+          description: this is the limit
+          schema:
+            type: integer
+            example: 10
+        - in: query
+          name: sortBy
+          description: value to sort with
+          schema: 
+            type: string
+            example: "title"
+        - in: query
+          name: orderBy
+          description: order in which to show
+          schema:
+            type: string
+            example: "ASC"
+        - in: query
+          name: search
+          description: value to be searched
+          schema:
+            type: string
+            example: "avatar"
+            
+      responses:
+        200:
+          description: Get all users
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            userType:
+                              type: string
+                              enum: ['User']
+                              example: 1
+                            email:
+                              type: string
+                              example: abc@example.com
+                            password:
+                              type: string
+                              example: $2b$10$cYy2I8Dej.PveaRw0QAnxOCanD7okp9anhZTcYkv4P0YF4K0EbsRS
+                            createdAt:
+                              type: string
+                              format: date-time
+                              example: 2024-10-21T11:01:24.965Z
+                            updatedAt:
+                              type: string
+                              format: date-time
+                              example: 2024-10-21T11:01:24.965Z
+                            deletedAt:
+                              type: string
+                              format: date-time
+                              example:
+                      total:
+                        type: integer
+                        example: 5
+        
+        500:
+          $ref: '#/components/responses/500APIError'
+        
+        400:
+          $ref: '#/components/responses/400APIError'
+        
+        401:
+          $ref: '#/components/responses/401APIError'
+        403:
+          $ref: '#/components/responses/403APIError'
+          
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userType:
+                  type: string
+                  enum: ["Admin", "User"]
+                  example: "1"
+                email:
+                  type: string
+                  example: abc@gmail.com
+                password:
+                  type: string
+                  example: Abc12345@example.com
+                confirmPassword:
+                  type: string
+                  example: Abc@12345@
+      
+      responses:
+        201:
+          description: Creating a user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      userType:
+                        type: string
+                        example: 1
+                      email:
+                        type: string
+                        example: abc@example.com
+                      updatedAt:
+                        type: string
+                        format: date-time
+                        example: 2024-10-22T07:28:48.097Z
+                      createdAt:
+                        type: string
+                        format: date-time
+                        example: 2024-10-22T07:28:48.097Z
+        500:
+          $ref: '#/components/responses/500APIError'
+        401:
+          $ref: '#/components/responses/401APIError'
+        400:
+          $ref: '#/components/responses/400APIError'
+        403:
+          $ref: '#/components/responses/403APIError'
+  
+  /users/{id}:    
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Admin
+      parameters:
+        - in: path
+          name: id
+          description: this is user id
+          required: true
+          schema:
+            type: integer
+            example: 2
+      responses:
+        200:
+          description: to delete a image
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: Image deleted successfully
+        500:
+          $ref: '#/components/responses/500APIError'
+        400:
+          $ref: '#/components/responses/400APIError'
+        401:
+          $ref: '#/components/responses/401APIError'
+        404:
+          $ref: '#/components/responses/404APIError'
+        403:
+          $ref: '#/components/responses/403APIError'
+      
+            
+                        
+components:
+  schemas:
+    ImagesArray:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        images:
+          type: array
+          items:
+            properties:
+              id:
+                type: integer
+                example: 1
+              dataUri:
+                  type: string
+                  format: uri
+                  example: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA3YAAAHwCAYAAADq2/1hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAP+lSU==
+              userId:
+                type: integer
+                example: 1
+              createdAt: 
+                type: string
+                format: date-time
+                # example: 2024-10-21T11:03:01.019Z
+              updatedAt:
+                type: string
+                format: date-time
+                # example: 2024-10-21T11:03:01.019Z
+              deletedAt:
+                type: string
+                format: date-time
+                example: 
+    ImageObject:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        image:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 4
+            userId:
+              type: integer
+              example: 1
+            dataUri:
+              type: string
+              format: uri
+              example: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA3YAAAHwCAYAAADq2/1hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAFiUAABYlAUlSJPAAAP+lSU==
+            updatedAt:
+              type: string
+              format: date-time
+              example: 2024-10-21T11:03:01.019Z
+            createdAt: 
+              type: string
+              format: date-time
+              example: 2024-10-21T11:03:01.019Z
+            deletedAt:
+              type: string
+              format: date-time
+              example:
+          
+
+  responses:
+    200ImageSuccess:
+      description: to get all uploaded images
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ImagesArray'
+    201ImageSuccess:
+      description: to upload images
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ImageObject'
+    500APIError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status: 
+                type: string
+                example: fail
+              message:
+                type: string
+                example: error message
+    400APIError:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status: 
+                type: string
+                example: fail
+              message:
+                type: string
+                example: User no longer exists
+    
+    401APIError:
+      description: Unauthorized access 
+      content:
+        application/json:
+          schema:
+             type: object
+             properties:
+              status: 
+                type: string
+                example: fail
+              message:
+                type: string
+                example: Please login to get access
+    404APIError:
+      description: 404 API error encountered
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status: 
+                type: string
+                example: fail
+              message: 
+                type: string
+                example: Not Found
+    403APIError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status: 
+                type: string
+                example: fail
+              message: 
+                type: string
+                example: You don't have permission to access
+              
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      

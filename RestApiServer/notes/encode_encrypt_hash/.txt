@@ -1,0 +1,76 @@
+                                                *Encoding*
+
+Definition:
+-A technique to transform data from one format to another so that it can be understood and consumed by different systems.
+-Example: (encoding) transformation of sequence of characters (understood by human-systems) to sequence of bits (suitable for computer systems)
+-Few encoding algorithms/mechanisms are:
+    ASCII - a character encoding standard for electronic communication. (A-Z: 65-90, a-z: 97-122, 0-9: 48-57)
+    Unicode- a text encoding standard which allows us to represent more complex items than letters, such as emoji and other symbols.
+    Base64-  a group of binary-to-text encoding schemes that transforms binary data (such as image) into a sequence of printable characters (text), limited to a set of 64 unique characters.
+             (characters in string --> decimal --> 8-bit binary form --> 6-bit form --> decimal)  
+    Url encoding- encode arbitrary data (such as IP address or file system path) in an URL, where some characters are reserved or cannot be used (think of spaces or colons, for example).
+-Json web token are encoded using Base64-URL, a variant of Base64 encoding combined with URL encoding.
+
+Use:
+- to maintain data usability
+- allows systems that use different data representations to share information.
+
+Reverse Process:
+-The original data can be retrieved using decoding. The same algorithm is used to decode the data which was used to encode it in the first place.
+
+Secure:
+-Encoding has no security purpose. Anyone who knows the conversion algorithm can encode and decode data. The algorithm used to encode the data is publicly available.
+
+
+                                                        *Encyption*
+
+Definition:
+-Encryption is a form of encoding technique that makes your data unreadable and hard to decode for an unauthorized user. 
+-Only the authorized user who knows the key or password is able to retrieve the original data
+-Encryption makes use of “Cryptographic Keys”. Using the key, the data is Encrypted at the sender’s end and using the same or different key, the data is Decrypted at the receiver's end.
+-Two families of key-based encryption algorithms exist:
+    (i) Symmetric-key algorithms: these algorithms use the same key to encrypt and decrypt data. The Advanced Encryption Standard (AES) algorithm is an example of this family's algorithms.
+    
+                    sender<--------------------- same key --------------------------> receiver
+
+                                encrypting                         decrypting
+                    plain text-----------------> cipher text------------------------> plain text
+    
+        Problem: The sender has to transmit the key to the receiver as well, and if it is done over an unsecured connection, there is a high chance that they key can be intercepted by any attacker.
+
+    (ii) Asymmetric-key algorithms: these algorithms use different keys to encrypt and decrypt data. The two keys are bound by a complex mathematical relationship. RSA is an example of an algorithm in this family.
+        - One key is used for encrypting the data, which is known as the Public Key, and is known virtually everyone on the internet. 
+        - The other key is used for decrypting the data, which is known as the Private Key, and is known only to the receiver and it must be kept discreet.
+                                    encrypting                      decrypting
+        sender -----> plain text  -----------------> cipher text -----------------> plain text -----> receiver
+                                    public key                     private key
+
+Use:
+- to protect confidentiality of data
+
+Reverse Process:
+- The original data can be retrieved using decryption. Although just for authorized people, the ones in possession of a decryption key.
+
+Secure: 
+- The encrypted data is more secure.
+
+
+                                                    *Hashing*
+
+Definition:
+-A technique to generate a unique fixed-length string (hash) strictly depending on the specific input data.
+- It is a technique to ensure the integrity of the data, since the generated hash depends on the specific input data, any small change to the input data generates a different hash. 
+
+-A hashing algorithm must have the following features:
+    -The resulting hash has a fixed length.
+    -The same input always produces the same output.
+    -Multiple different inputs should not produce the same output.
+    -It must not be possible to obtain the input from the output data.
+    -Any change to the input data implies a different resulting hash
+
+Use:
+- to ensure data integrity
+
+Reverse Process:
+-Unlike encoding and encryption hashing is not a reversible process. 
+

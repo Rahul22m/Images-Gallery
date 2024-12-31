@@ -1,0 +1,29 @@
+{
+  "name": "imageuploaer",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+   "start": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-openapi-validator": "^5.3.7",
+    "jsonwebtoken": "^9.0.2",
+    "nodemon": "^3.1.7",
+    "pg": "^8.13.0",
+    "sequelize": "^6.37.4",
+    "swagger-ui-express": "^5.0.1",
+    "yaml": "^2.6.0",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.6.2"
+  }
+}
